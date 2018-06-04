@@ -76,7 +76,7 @@ class Kit:
         # Replace other messages
         git_status_string = re.sub(staged_regex, staged_message, git_status_string, flags=re.MULTILINE)
         git_status_string = re.sub(unstaged_regex, unstaged_message, git_status_string, flags=re.MULTILINE)
-        git_status_string = re.sub(clean_regex, staged_message, git_status_string, flags=re.MULTILINE)
+        git_status_string = re.sub(clean_regex, clean_message, git_status_string, flags=re.MULTILINE)
         # If we don't *have* a staged message, add one
         if re.search(no_changes_regex, git_status_string):
             git_status_string = re.sub(no_changes_regex, "", git_status_string)
