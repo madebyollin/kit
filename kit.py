@@ -23,10 +23,12 @@ class ansi:
 class Kit:
     @staticmethod
     def init():
+        """Initialize a new kit repository in the current directory."""
         sh.run(["git", "init"])
 
     @staticmethod
     def stage(files=None):
+        """Stage files to be included in the next save. `kit stage` stages all files; `kit stage f1 f2 f3` stages {f1, f2, f3}."""
         if not files:
             files = ["."]
         sh.run(["git", "add"] + files)
@@ -34,6 +36,7 @@ class Kit:
 
     @staticmethod
     def unstage(files=None):
+        """Unstage files from being included in the next save. `kit unstage` unstages all files; `kit unstage f1 f2 f3` unstages {f1, f2, f3}."""
         if not files:
             files = ["."]
         sh.run(["git", "reset", "HEAD", "--"] + files)
@@ -47,6 +50,7 @@ class Kit:
 
     @staticmethod
     def undo(files=None):
+        """Undo changes to files, returning them to the last saved version. `kit undo` undoes all changes; `kit undo f1 f2 f3` undoes changes to {f1, f2, f3}."""
         if not files:
             sh.run(["git", "stash"])
             sh.run(["git", "reset", "--hard", "HEAD"])
@@ -88,6 +92,7 @@ class Kit:
 
     @staticmethod
     def save(name=None):
+        """Save current staged changes into a new version."""
         if not name:
             print("Please name your new version (e.g. kit save 'Fix bug')")
             return
@@ -96,10 +101,20 @@ class Kit:
 
     @staticmethod
     def upload():
+        """Upload current version to remote server."""
         sh.run(["git", "push"])
 
     @staticmethod
+    def version():
+        """Show information about the most recently-saved version."""
+        git_commit = sh.run(["git", "-c", "color.ui=always", "show", "--summary"], stdout=sh.PIPE)
+        git_commit_string = git_commit.stdout.decode()
+        git_commit_string = re.sub("commit", "Version", git_commit_string, count=1)
+        print(git_commit_string)
+
+    @staticmethod
     def download():
+        """Attempt to combine current version with remote server."""
         sh.run(["git", "pull"])
 
 def main():
