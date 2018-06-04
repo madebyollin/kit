@@ -12,6 +12,7 @@ class ansi:
     RED = '\033[0;31m'
     RED_B = '\033[1;31m'
     BLUE = '\033[0;94m'
+    GREEN = '\033[0;32m'
     BLUE_B = '\033[1;94m'
     CYAN = '\033[0;36m'
     CYAN_B = '\033[1;36m'
@@ -64,14 +65,18 @@ class Kit:
 
         no_changes_regex = r'no changes added to commit.*\)'
 
+        clean_regex = r'nothing to commit, working tree clean'
+        clean_message = ansi.GREEN + 'All changes saved' + ansi.ENDC
+
         # Get the status, including colors
         git_status = sh.run(["git", "-c", "color.status=always", "status"], stdout=sh.PIPE)
         git_status_string = git_status.stdout.decode()
         # Remove the branch name; it's already in my prompt
         git_status_string = re.sub(branch_regex, "", git_status_string)
-        # Replace the staged and unstaged messages
+        # Replace other messages
         git_status_string = re.sub(staged_regex, staged_message, git_status_string, flags=re.MULTILINE)
         git_status_string = re.sub(unstaged_regex, unstaged_message, git_status_string, flags=re.MULTILINE)
+        git_status_string = re.sub(clean_regex, staged_message, git_status_string, flags=re.MULTILINE)
         # If we don't *have* a staged message, add one
         if re.search(no_changes_regex, git_status_string):
             git_status_string = re.sub(no_changes_regex, "", git_status_string)
