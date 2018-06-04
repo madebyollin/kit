@@ -70,7 +70,7 @@ class Kit:
         no_changes_regex = r'no changes added to commit.*\)'
 
         clean_regex = r'nothing to commit, working tree clean'
-        clean_message = 'All changes saved.'
+        clean_message = '🐱 All changes saved.'
 
         # Get the status, including colors
         git_status = sh.run(["git", "-c", "color.status=always", "status"], stdout=sh.PIPE)
