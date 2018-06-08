@@ -49,8 +49,8 @@ class Kit:
         sh.run(["git", "diff", "--cached"] + files)
 
     @staticmethod
-    def undo(files=None):
-        """Undo changes to files, returning them to the last saved version. `kit undo` undoes all changes; `kit undo f1 f2 f3` undoes changes to {f1, f2, f3}."""
+    def rewind(files=None):
+        """Rewind changes to files, returning them to the last saved version. `kit rewind` rewinds all changes; `kit rewind f1 f2 f3` rewinds changes to {f1, f2, f3}."""
         if not files:
             sh.run(["git", "stash"])
             sh.run(["git", "reset", "--hard", "HEAD"])
@@ -98,6 +98,16 @@ class Kit:
             return
         else:
             sh.run(["git", "commit", "-m"] + name)
+
+    @staticmethod
+    def saveall(name=None):
+        """Save all changes into a new version."""
+        if not name:
+            print("Please name your new version (e.g. kit saveall 'Fix bug')")
+            return
+        else:
+            Kit.stage()
+            Kit.save(name)
 
     @staticmethod
     def upload():
