@@ -47,6 +47,7 @@ class Kit:
         if not files:
             files = ["."]
         sh.run(["git", "diff", "--cached"] + files)
+        sh.run(["git", "diff"] + files)
 
     @staticmethod
     def rewind(files=None):
