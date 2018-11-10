@@ -27,6 +27,11 @@ class Kit:
         sh.run(["git", "init"])
 
     @staticmethod
+    def amend():
+        """Initialize a new kit repository in the current directory."""
+        sh.run(["git", "commit", "--amend"])
+
+    @staticmethod
     def stage(files=None):
         """Stage files to be included in the next save. `kit stage` stages all files; `kit stage f1 f2 f3` stages {f1, f2, f3}."""
         if not files:
