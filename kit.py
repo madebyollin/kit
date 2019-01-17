@@ -129,9 +129,35 @@ class Kit:
         print(git_commit_string)
 
     @staticmethod
+    def ignore(files=None):
+        """Add specified files to gitignore"""
+        gitignore_path = sh.run(["git", "rev-parse", "--show-toplevel"],stdout=sh.PIPE).stdout.decode().strip() + "/.gitignore"
+        with open(gitignore_path, 'a') as gitignore:
+            for f in files:
+                gitignore.write(f + "\n")
+                print("Ignored", f)
+        #sh.run(["echo"] + files + [">", "$()/.gitignore"])
+
+    @staticmethod
     def download():
         """Attempt to combine current version with remote server."""
         sh.run(["git", "pull"])
+
+    @staticmethod
+    def dl():
+        Kit.download()
+
+    @staticmethod
+    def ul():
+        Kit.upload()
+    
+    @staticmethod
+    def st():
+        Kit.status()
+
+    @staticmethod
+    def sa(name=None):
+        Kit.saveall(name)
 
 def main():
     args = sys.argv[1:]
