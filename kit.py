@@ -137,7 +137,12 @@ class Kit:
                 gitignore.write(f + "\n")
                 print("Ignored", f)
         #sh.run(["echo"] + files + [">", "$()/.gitignore"])
-
+    @staticmethod
+    def forgetignored():
+        # https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file-that-was-tracked-but-is-now-in-gitignore
+        sh.run(["git", "rm", "-r", "--cached", "."])
+        Kit.saveall("Forget gitignored files")
+        
     @staticmethod
     def download():
         """Attempt to combine current version with remote server."""
